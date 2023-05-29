@@ -4,7 +4,7 @@ import time
 from scipy.spatial import distance
 import matplotlib.pyplot as plt
 
-# 建立初始人口
+# 建立中繼站
 def create_waypoints(size, num_waypoints):
     population = []
     for i in range(size):
@@ -72,6 +72,7 @@ def genetic_algorithm(waypoints_coordinates, pop_size=100, num_generations=1000,
             distance_matrix[i,j] = distance.euclidean(waypoints_coordinates[i], waypoints_coordinates[j])
 
     population = create_waypoints(pop_size, num_waypoints)
+    # print(population)
 
     best_score = float('inf')
     best_route = []
@@ -95,6 +96,12 @@ def genetic_algorithm(waypoints_coordinates, pop_size=100, num_generations=1000,
         print(f"Generation {generation}: Best score: {current_best_score}") 
         print(f"Current best route: {[0] + population[current_best_score_index] + [num_waypoints-1]}")
 
+        current_best_route = [0] + population[current_best_score_index] + [num_waypoints-1]
+        current_best_route_coordinates = [waypoints_coordinates[i] for i in current_best_route]
+        print("Current best route coordinates:", current_best_route_coordinates)
+        print("----------------------------------------------------")
+
+
     print("Final best score:", best_score)
     print("Final best route:", best_route)
 
@@ -105,7 +112,7 @@ def genetic_algorithm(waypoints_coordinates, pop_size=100, num_generations=1000,
     # 繪製最後的最佳路徑
     best_route_coordinates = [waypoints_coordinates[i] for i in best_route]
     plt.figure()
-    plt.scatter(*zip(*waypoints_coordinates), c='b') # 所有城市
+    plt.scatter(*zip(*waypoints_coordinates), c='b') # 所有中繼站
     plt.scatter(*zip(*[waypoints_coordinates[0], waypoints_coordinates[-1]]), c='r') # 起點和終點
     plt.plot(*zip(*best_route_coordinates), c='g') # 最佳路徑
     for i, txt in enumerate(best_route):
@@ -116,10 +123,11 @@ def main():
     # 測試
     waypoints_coordinates = [(0, 0)]
     for _ in range(10):
-        waypoints_coordinates.append((random.randint(1,99), random.randint(1,99)))
+        x = random.randint(1, 99)
+        y = random.randint(1, 99)
+        waypoints_coordinates.append((x, y))
     waypoints_coordinates.append((100, 100))
     genetic_algorithm(waypoints_coordinates)
-
 
 if __name__ == "__main__":
     main()
