@@ -49,35 +49,35 @@ def simulated_annealing(initial_solution, initial_temperature, cooling_rate, ite
 
     return best_solution
 
-start_time = time.time()
-best_path = simulated_annealing([start] + intermediates + [end], initial_temperature=1000, cooling_rate=0.99, iterations=10000)
-execution_time = time.time() - start_time
+def main():
+    start_time = time.time()
+    best_path = simulated_annealing([start] + intermediates + [end], initial_temperature=1000, cooling_rate=0.99, iterations=10000)
+    execution_time = time.time() - start_time
 
-print("Best Path:", best_path)
-print("Path Length:", total_distance(best_path))
-print("Execution Time:", execution_time, "s")
+    print("Best Path:", best_path)
+    print("Path Length:", total_distance(best_path))
+    print("Execution Time:", execution_time, "s")
 
-# 繪製三維路徑圖
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
 
-# 繪製起點和終點
-ax.scatter(start[0], start[1], start[2], c='r', marker='o', label='Start')
-ax.scatter(end[0], end[1], end[2], c='orange', marker='o', label='End')
+    ax.scatter(start[0], start[1], start[2], c='r', marker='o', label='Start')
+    ax.scatter(end[0], end[1], end[2], c='orange', marker='o', label='End')
 
-# 繪製中繼點
-for point in intermediates:
-    ax.scatter(point[0], point[1], point[2],  color='b', marker='o')
+    for point in intermediates:
+        ax.scatter(point[0], point[1], point[2],  color='b', marker='o')
 
-# 繪製最佳路徑
-x = [point[0] for point in best_path]
-y = [point[1] for point in best_path]
-z = [point[2] for point in best_path]
-ax.plot(x, y, z, marker='o', label='Best Path')
+    x = [point[0] for point in best_path]
+    y = [point[1] for point in best_path]
+    z = [point[2] for point in best_path]
+    ax.plot(x, y, z, marker='o', label='Best Path')
 
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
-plt.legend()
-plt.show()
+    plt.legend()
+    plt.show()
+
+if __name__ == '__main__':
+    main()
