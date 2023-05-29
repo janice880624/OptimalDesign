@@ -5,6 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+# Run the genetic algorithm
+population_size = 100
+num_generations = 10000
+mutation_rate = 0.1
+
 # Define middle points
 middle_points = [(50, 35, 90), (95, 83, 78), (31, 63, 20), (17, 54, 76), (69, 18, 34),
                  (47, 74, 19), (95, 36, 73), (15, 43, 58), (58, 56, 68), (87, 23, 97)]
@@ -84,42 +89,36 @@ def genetic_algorithm(population_size, num_generations, mutation_rate):
 
     return best_individuals, best_fitnesses
 
-# Run the genetic algorithm
-population_size = 100
-num_generations = 10000
-mutation_rate = 0.1
-start_time = time.time()
-best_individuals, best_fitnesses = genetic_algorithm(population_size, num_generations, mutation_rate)
+def main():
+    start_time = time.time()
+    best_individuals, best_fitnesses = genetic_algorithm(population_size, num_generations, mutation_rate)
 
-# Extract the best path
-best_path = best_individuals[-1]
-best_path = [(0, 0, 0)] + best_path + [(100, 100, 0)]
+    best_path = best_individuals[-1]
+    best_path = [(0, 0, 0)] + best_path + [(100, 100, 0)]
 
-# Calculate execution time
-execution_time = time.time() - start_time
-# Print best path, execution time, and path length
-print("Best Path:", best_path)
-print("Execution Time:", execution_time)
-print("Path Length:", best_fitnesses[-1])
+    execution_time = time.time() - start_time
 
-# Plotting 3D path
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+    print("Best Path:", best_path)
+    print("Path Length:", best_fitnesses[-1])
+    print("Execution Time:", execution_time)
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
 
+    x = [point[0] for point in best_path]
+    y = [point[1] for point in best_path]
+    z = [point[2] for point in best_path]
+    ax.scatter(x[0], y[0], z[0], c='red', marker='o', label='Start')
+    ax.scatter(x[-1], y[-1], z[-1], c='orange', marker='o', label='End')
+    ax.plot(x, y, z, c='b', marker='o', label='Best Path')
+    ax.plot(x, y, z, marker='o')
 
-x = [point[0] for point in best_path]
-y = [point[1] for point in best_path]
-z = [point[2] for point in best_path]
-ax.scatter(x[0], y[0], z[0], c='red', marker='o', label='Start')
-ax.scatter(x[-1], y[-1], z[-1], c='orange', marker='o', label='End')
-ax.plot(x, y, z, c='b', marker='o', label='Best Path')
-ax.plot(x, y, z, marker='o')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
+    ax.legend()
+    plt.show()
 
-
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-ax.legend()
-plt.show()
+if __name__ == '__main__':
+    main()
